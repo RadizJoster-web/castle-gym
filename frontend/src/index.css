@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+:root {
+  --bg-main: #16171c;
+  --bg-card: #1e2029;
+  --border-color: #34363f;
+
+  --text-primary: #e4ff4e;
+  --text-secondary: #ffffff;
+  --text-muted: #9698a6;
+  --text-light: #f4f2ea;
+
+  --color-primary: #e4ff4e;
+  --color-primary-hover: #b9d13c;
+  --bg-hover: #1b1d24;
+
+  --font-display: "Bebas Neue", "Arial Narrow", sans-serif;
+  /* font-family: "Bebas Neue", sans-serif; */
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  /* font-family: "Inter", sans-serif; */
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
+  /* font-family: "IBM Plex Mono", monospace; */
+
+  --shadow-lift: 0 20px 50px -20px rgba(0, 0, 0, 0.6);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@theme {
+  --color-main: var(--bg-main);
+  --color-card: var(--bg-card);
+  --color-border-color: var(--border-color);
+
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+  --color-light: var(--text-light);
+  --color-hover: var(--bg-hover);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-secondary);
+  padding: 0;
+  margin: 0;
+}
