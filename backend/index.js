@@ -7,6 +7,7 @@ const port = process.env.PORT || 3000;
 
 // Imports Routers
 const memberRoutes = require("./routes/memberRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 // Configuration CORS
 app.use(
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Endpoint
 app.use("/api/member", memberRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({
