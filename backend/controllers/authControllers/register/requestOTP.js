@@ -1,5 +1,6 @@
-const connection = require("../../../config/database");
 const crypto = require("crypto");
+const bcrypt = require("bcryptjs");
+const connection = require("../../../config/database");
 const sendOTPEmail = require("../../../helper/mailer");
 
 // Variabel lokal untuk menyimpan cooldown OTP di memori (Hemat DB dari Spam!)
@@ -14,7 +15,7 @@ const requestOTP = async (req, res) => {
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
-    return res.status(400).json({ error: "Format email tidak valid" });
+    return res.status(400).json({ error: "Format email invalid" });
   }
 
   const lastRequestTime = otpCooldowns.get(email);
@@ -44,6 +45,8 @@ const requestOTP = async (req, res) => {
       }
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     // Generate 6 digit angka acak yang aman
     const otpCode = crypto.randomInt(100000, 999999).toString();
 
@@ -55,13 +58,13 @@ const requestOTP = async (req, res) => {
       // Jika user ketik ulang karena merasa salah/belum verifikasi, update data & OTP-nya
       await db.execute(
         "UPDATE members SET fullname = ?, password = ?, otp_code = ?, otp_expires_at = ? WHERE email = ?",
-        [fullname, password, otpCode, expiresAt, email],
+        [fullname, hashedPassword, otpCode, expiresAt, email],
       );
     } else {
       // Jika benar-benar user baru
       await db.execute(
         "INSERT INTO members (fullname, email, password, otp_code, otp_expires_at, is_verified) VALUES (?, ?, ?, ?, ?, false)",
-        [fullname, email, password, otpCode, expiresAt],
+        [fullname, email, hashedPassword, otpCode, expiresAt],
       );
     }
 
